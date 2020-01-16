@@ -162,6 +162,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				stat("Distribution Pressure", internal.distribute_pressure)
 
 		CHANGELING_STATPANEL_STATS(null)
+		STATPANEL_WIZARD_STATUS(null)
 
 		if(istype(wear_suit, /obj/item/clothing/suit/space/space_ninja))
 			var/obj/item/clothing/suit/space/space_ninja/SN = wear_suit
@@ -184,6 +185,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 				stat("Body Temperature:","[bodytemperature-T0C] degrees C ([bodytemperature*1.8-459.67] degrees F)")
 
 	CHANGELING_STATPANEL_POWERS(null)
+	STATPANEL_SPELLS(null)
 
 	if(istype(wear_suit, /obj/item/clothing/suit/space/rig/))
 		var/obj/item/clothing/suit/space/rig/rig = wear_suit
@@ -265,7 +267,10 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 			if(prob(current_size * 5) && hand.w_class >= ((STAGE_FIVE-current_size)/2)  && unEquip(hand))
 				step_towards(hand, src)
 				to_chat(src, "<span class='warning'>\The [S] pulls \the [hand] from your grip!</span>")
-	apply_effect(current_size * 3, IRRADIATE)
+
+	if(!istype(S,/obj/singularity/scrap_ball))		//So you won't get irradiated by tornado
+		apply_effect(current_size * 3, IRRADIATE)
+
 	if(mob_negates_gravity())//Magboots protection
 		return
 	..()
@@ -300,7 +305,7 @@ INITIALIZE_IMMEDIATE(/mob/living/carbon/human/dummy)
 	else
 		if(length(M.attack_sound))
 			playsound(src, pick(M.attack_sound), VOL_EFFECTS_MASTER)
-		visible_message("<span class='userdanger'><B>[M]</B>[M.attacktext] [src]!</span>")
+		visible_message("<span class='userdanger'><B>[M]</B> [M.attacktext] [src]!</span>")
 		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
 		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)

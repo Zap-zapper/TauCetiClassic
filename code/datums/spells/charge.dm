@@ -40,10 +40,12 @@
 			to_chat(M, "<span class='notice'>you feel very strange for a moment, but then it passes.</span>")
 	if(!charged_item)
 		for(var/obj/item in hand_items)
+			/*
 			if(istype(item, /obj/item/weapon/spellbook))
 				to_chat(C, "<span class='notice'>Glowing red letters appear on the front cover...</span>.\
 				<span class='warning'>[pick("NICE TRY BUT NO!","CLEVER BUT NOT CLEVER ENOUGH!", "SUCH FLAGRANT CHEESING IS WHY WE ACCEPTED YOUR APPLICATION!", "CUTE!", "YOU DIDN'T THINK IT'D BE THAT EASY, DID YOU?")]</span>")
-			else if(istype(item, /obj/item/weapon/gun/magic))
+			*/
+			if(istype(item, /obj/item/weapon/gun/magic))
 				var/obj/item/weapon/gun/magic/I = item
 				if(prob(50) && !I.can_charge)
 					I.max_charges = max(0, I.max_charges - 1)

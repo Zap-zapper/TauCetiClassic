@@ -91,13 +91,6 @@
 	for(var/mob/living/M in get_turf(loc))
 		M.bullet_act(Proj, def_zone)
 
-/obj/effect/forcefield/magic
-	var/mob/wizard
-
-/obj/effect/forcefield/magic/atom_init(mapload, mob/wiz, timeleft = 300)
-	. = ..()
-	wizard = wiz
-	QDEL_IN(src, timeleft)
 
 /obj/effect/forcefield/magic/CanPass(atom/movable/mover, turf/target, height=0)
 	if(mover == wizard)

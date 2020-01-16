@@ -20,6 +20,9 @@
 	if(stat == DEAD && (act != "deathgasp"))
 		return
 
+	if(silent)
+		return
+
 	var/cloud_emote = ""
 
 	switch(act)

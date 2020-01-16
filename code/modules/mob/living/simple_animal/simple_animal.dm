@@ -228,7 +228,7 @@
 	if(Proj.nodamage)
 		Weaken(20)
 	adjustBruteLoss(Proj.damage)
-	return 0
+	return ..()
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M)
 	..()

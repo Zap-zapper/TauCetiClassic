@@ -248,12 +248,12 @@
 	ranged_cooldown = ranged_cooldown_cap
 	return
 
-/mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
+/mob/living/simple_animal/hostile/proc/Shoot(atom/target, atom/start, user, bullet = 0)
 	if(target == start)
 		return
 
-	var/obj/item/projectile/A = new projectiletype(user:loc)
-	playsound(user, projectilesound, VOL_EFFECTS_MASTER)
+	var/obj/item/projectile/A = new projectiletype(src.loc)
+	playsound(src.loc, projectilesound, VOL_EFFECTS_MASTER)
 	if(!A)	return
 
 	if (!istype(target, /turf))
@@ -262,8 +262,8 @@
 	A.current = target
 	A.starting = get_turf(src)
 	A.original = get_turf(target)
-	A.yo = target:y - start:y
-	A.xo = target:x - start:x
+	A.yo = target.y - start.y
+	A.xo = target.x - start.x
 	spawn( 0 )
 		A.process()
 	return
