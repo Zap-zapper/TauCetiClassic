@@ -3,6 +3,7 @@
 	desc = ""
 	mana_cost = 0
 	cooldown = 0
+	non_direct = TRUE
 
 
 /obj/effect/proc_holder/magic/ethereal_jaunt/check_mob_cast(mob/living/carbon/human/target)
