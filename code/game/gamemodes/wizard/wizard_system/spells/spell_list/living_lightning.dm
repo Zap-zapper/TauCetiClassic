@@ -24,6 +24,34 @@
 
 
 /obj/effect/proc_holder/magic/living_lightning/cast_on_turf(turf/target)
+	owner.current.tesla_ignore = TRUE
+	playsound(target, 'sound/magic/lightningbolt.ogg', 100, 1)
+	var/list/high_priority_objects = list()
+	var/list/low_priority_objects = list()
+	for(var/atom/A in view(target, 2))
+		if(istype(A, /obj/machinery) || istype(A, /obj/structure))
+			high_priority_objects.Add(A)
+		else if(isliving(A))
+			var/mob/living/L = A
+			if(L.tesla_ignore)
+				continue
+			else
+				high_priority_objects.Add(L)
+		else
+			low_priority_objects.Add(A)
+
+	for(var/i in 1 to LIGHTNING_STORM_AMOUNT_OF_LIGHTNINGS)
+		var/obj/to_zap
+		if(high_priority_objects.len)
+			to_zap = safepick(high_priority_objects)
+			high_priority_objects.Remove(to_zap)
+		else if(low_priority_objects.len)
+			to_zap = safepick(low_priority_objects)
+			low_priority_objects.Remove(to_zap)
+		else
+			break
+		tesla_zap(get_turf(owner.current), LIGHTNING_STORM_JUMP_RANGE, LIGHTNING_STORM_POWER, to_zap)
+
 	var/turf/start = get_turf(owner.current)
 	for(var/turf/T in getline(owner.current, target))		//Going two times through that turf line, if we consider check_turf_cast(). Can be optimized but uuuh...
 		if(T == start)
@@ -42,5 +70,7 @@
 	var/datum/effect/effect/system/spark_spread/spark_system_second = new /datum/effect/effect/system/spark_spread()
 	spark_system_second.set_up(5, 0, owner.current)
 	spark_system_second.start()
+
+	owner.current.tesla_ignore = FALSE
 
 

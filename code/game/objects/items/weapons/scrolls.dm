@@ -87,5 +87,5 @@
 	if(!success)
 		user.loc = pick(L)
 
-	smoke.start()
+	smoke.start(TRUE)
 	src.uses -= 1

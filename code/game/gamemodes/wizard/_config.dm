@@ -48,7 +48,7 @@
 
 
 #define HAZE_DAMAGE_MULT 4
-#define HAZE_LINGER_TIME 150
+#define HAZE_LINGER_TIME 250
 
 
 #define LASH_BASE_DAMAGE 10

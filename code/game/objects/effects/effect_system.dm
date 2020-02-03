@@ -60,7 +60,9 @@ would spawn and follow the beaker, even if it is carried or thrown.
 /datum/effect/effect/system/proc/attach(atom/atom)
 	holder = atom
 
-/datum/effect/effect/system/proc/start()
+/datum/effect/effect/system/proc/start(var/destroy_after_finish)
+	if(destroy_after_finish)
+		qdel(src)
 
 /datum/effect/effect/system/Destroy()
 	holder = null
@@ -111,6 +113,7 @@ steam.start() -- spawns the effect
 				sleep(5)
 				step(steam,direction)
 			QDEL_IN(steam, 20)
+	..()
 
 /////////////////////////////////////////////
 //SPARK SYSTEM (like steam system)
@@ -183,6 +186,7 @@ steam.start() -- spawns the effect
 			for(i=0, i<pick(1,2,3), i++)
 				sleep(5)
 				step(sparks,direction)
+	..()
 
 /datum/effect/effect/system/spark_spread/proc/delete_sparks(obj/effect/effect/sparks/sparks)
 	if(sparks)
@@ -313,13 +317,10 @@ steam.start() -- spawns the effect
 /////////////////////////////////////////////
 
 /datum/effect/effect/system/smoke_spread
-	var/total_smoke = 0 // To stop it being spammed and lagging!
 	var/direction
 	var/smoke_type = /obj/effect/effect/smoke
 
-/datum/effect/effect/system/smoke_spread/set_up(n = 5, c = 0, loca, direct)
-	if(n > 10)
-		n = 10
+/datum/effect/effect/system/smoke_spread/set_up(n = 5, c = FALSE, loca, direct)
 	number = n
 	cardinals = c
 	if(istype(loca, /turf))
@@ -330,28 +331,23 @@ steam.start() -- spawns the effect
 		direction = direct
 
 /datum/effect/effect/system/smoke_spread/start()
-	var/i = 0
-	for(i=0, i<src.number, i++)
-		if(src.total_smoke > 20)
-			return
-		spawn(0)
-			if(holder)
-				src.location = get_turf(holder)
-			var/obj/effect/effect/smoke/smoke = new smoke_type(src.location)
-			src.total_smoke++
-			var/direction = src.direction
-			if(!direction)
-				if(src.cardinals)
-					direction = pick(cardinal)
-				else
-					direction = pick(alldirs)
-			for(i=0, i<pick(0,1,1,1,2,2,2,3), i++)
-				sleep(10)
-				step(smoke,direction)
-			spawn(smoke.time_to_live*0.75+rand(10,30))
-				if (smoke) qdel(smoke)
-				src.total_smoke--
+	for(var/i=0, i<number, i++)
+		if(holder)
+			location = get_turf(holder)
+		var/obj/effect/effect/smoke/smoke = new smoke_type(location)
+		if(!direction)
+			if(cardinals)
+				INVOKE_ASYNC(smoke, /obj/effect/effect/smoke.proc/smoke_step_away, pick(cardinal))
+			else
+				INVOKE_ASYNC(smoke, /obj/effect/effect/smoke.proc/smoke_step_away, pick(alldirs))
+		else
+			INVOKE_ASYNC(smoke, /obj/effect/effect/smoke.proc/smoke_step_away, direction)
+	..()
 
+/obj/effect/effect/smoke/proc/smoke_step_away(direction)
+	for(var/k=0, k<pick(0,1,1,1,2,2,2,3), k++)
+		sleep(10)
+		step(src,direction)
 
 /datum/effect/effect/system/smoke_spread/bad
 	smoke_type = /obj/effect/effect/smoke/bad

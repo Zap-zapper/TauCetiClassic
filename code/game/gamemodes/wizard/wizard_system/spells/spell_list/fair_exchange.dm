@@ -31,8 +31,8 @@
 		to_chat(owner.current, "<span class='wizard'>The spell failed! There is no equivalent of this item in the parallel dimension!</span>")
 		return
 	//Runtime, can't read newitem name
-	new new_item_type(target.loc)
-	message_admins("[usr] ([usr.ckey]) transformed [target] ([target.type]) into [new_item_type.name] ([new_item_type]). (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
+	var/obj/item/newitem = new new_item_type(target.loc)
+	message_admins("[usr] ([usr.ckey]) transformed [target] ([target.type]) into [newitem.name] ([new_item_type]). (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 	qdel(target)
 
 #undef EXCHANGE_MANACOST
