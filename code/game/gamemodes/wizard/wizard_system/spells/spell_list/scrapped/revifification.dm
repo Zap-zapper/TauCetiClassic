@@ -1,31 +1,31 @@
 /obj/effect/proc_holder/magic/click_on/revivification
 	name = "Borgnjor's revivification"
 	desc = ""
-	delay = 20
 	mana_cost = 0
 	cooldown = 120
-	types_to_click = list("mobs")
-	closerange = TRUE
+	range = 1
 
 //Maybe non-contagious zombies instead of skeletons?
 
 /obj/effect/proc_holder/magic/click_on/revivification/check_mob_cast(mob/living/carbon/human/target)
 	if(!ishuman(target))
 		to_chat(owner.current, "<font color = 'purple'><i>I can't cast this spell on non humans!</span>")
-		return TRUE
+		return
 	if(target.species.name == SKELETON)
 		to_chat(owner.current, "<font color = 'purple'><i>Even Borgnjor couldn't think of a way to heal this!</span>")
-		return TRUE
+		return
 	if(target.stat == DEAD)
 		if(!target.mind || !target.client)
 			to_chat(owner.current, "<font color = 'purple'><i>There is no soul connected to this body!</span>")
-			return TRUE
+			return
 		else
 			if(iswizard(target))
 				to_chat(owner.current, "<font color = 'purple'><i>Raising fellow mage as an undead slave is beyond all morals.</span>")
-				return TRUE
+				return
 			if(alert(owner.current, "The target is dead! Usage of this spell will raise them as a skeleton. Are you sure?",,"Yes", "No") == "No")
-				return TRUE
+				return
+
+	return TRUE
 
 /obj/effect/proc_holder/magic/click_on/revivification/cast_on_mob(mob/living/carbon/human/target)
 	if(target.stat != DEAD)

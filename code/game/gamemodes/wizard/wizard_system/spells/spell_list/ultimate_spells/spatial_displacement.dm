@@ -4,6 +4,7 @@
 	mana_cost = 0
 	ultimate = TRUE
 	var/area/thearea
+	non_direct = TRUE
 
 //Forbid to use on centcomm
 
@@ -11,15 +12,16 @@
 //Although, not sure if I want to fix it, since explicitly removing Armory from locactions list is kinda ugly, and wizards can't use guns anyway. Disarming security is pretty reasonable effect for Ultimate spell.
 //But if they do it constantly, then I am going to use a crutch and exclude armory from locations list. And justify it by some kind of anti-bluespace protection, I dunno...
 
-/obj/effect/proc_holder/magic/spatial_displacement/spell_specific_checks()
+/obj/effect/proc_holder/magic/spatial_displacement/check_mob_cast()
 	var/A = input("Area to transfer", "Displacement") in teleportlocs
 	if(!A)
-		return TRUE
+		return
 
 	thearea = teleportlocs[A]
+	return TRUE
 
 
-/obj/effect/proc_holder/magic/spatial_displacement/cast()
+/obj/effect/proc_holder/magic/spatial_displacement/cast_on_mob()
 	playsound(owner.current.loc, 'sound/magic/CastSummon.ogg', 100, 1,channel = 2)
 	var/turf/T = pick(get_area_turfs(thearea))
 	if(T)
