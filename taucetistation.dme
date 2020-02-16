@@ -503,6 +503,7 @@
 #include "code\game\gamemodes\wizard\wizard_system\spells\spell_list\ultimate_spells\spatial_displacement.dm"
 #include "code\game\gamemodes\wizard\wizard_system\spells\spell_list\ultimate_spells\tornado.dm"
 #include "code\game\gamemodes\wizard\wizard_system\spells\spell_list\ultimate_spells\white_haze.dm"
+#include "code\game\gamemodes\wizard\wizard_system\spells\spell_list\ultimate_spells\wish.dm"
 #include "code\game\jobs\access.dm"
 #include "code\game\jobs\jobprocs.dm"
 #include "code\game\jobs\jobs.dm"
