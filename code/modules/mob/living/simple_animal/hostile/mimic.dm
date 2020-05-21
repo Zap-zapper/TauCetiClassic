@@ -204,7 +204,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		..()
 
 /mob/living/simple_animal/hostile/mimic/copy/AttackingTarget()
-	. =..()
+	. = ..()
 	if(knockdown_people)
 		var/mob/living/L = .
 		if(istype(L))
@@ -217,3 +217,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		LoseTarget()
 		creator = owner
 		faction = "\ref[owner]"
+
+/mob/living/simple_animal/hostile/mimic/copy/religion
+	response_help = "pets the"
+	attacktext = "hugs"
+	a_intent = INTENT_HELP
